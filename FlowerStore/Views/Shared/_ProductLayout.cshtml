@@ -1,0 +1,386 @@
+﻿<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Youth Fashion A Ecommerce Category Flat Bootstrap Responsive Website Template | Singlepage :: w3layouts</title>
+    <link href="~/Content/css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Youth Fashion Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+    <!-- start menu -->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <!-- slide -->
+</head>
+<body>
+    <!--header-->
+    <div class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="col-sm-4 logo animated wow fadeInLeft" data-wow-delay=".5s">
+                    <h1><a href="index.html">Flower <span>Store</span></a></h1>
+                </div>
+                <div class="col-sm-4 world animated wow fadeInRight" data-wow-delay=".5s">
+                    <div class="cart box_1">
+                        <a href="/Cart/Checkout">
+                            <h3>
+                                <div class="total">
+                                    @{
+                                        List<FlowerStore.Models.ItemCart> itemCarts = Session["Cart"] as List<FlowerStore.Models.ItemCart>;
+                                        if (itemCarts != null && itemCarts.Count > 0)
+                                        {
+                                            <span class="simpleCart_total">@itemCarts.Sum(x => x.ProductPrice * x.Quantity).ToString("#,##")₫ (@itemCarts.Sum(x => x.Quantity))</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="simpleCart_total">0₫ (0)</span>
+                                        }
+                                    }
+                                </div>
+                                <img src="~/Content/images/cart.png" alt="" />
+                            </h3>
+                        </a>
+                    </div>
+                </div>
+                @{
+                    FlowerStore.Models.User user = Session["User"] as FlowerStore.Models.User;
+
+                    if (user != null)
+                    {
+                        <input type="text" id="UserID" value="@user.ID" hidden />
+                        <div class="col-sm-2 number animated wow fadeInRight" data-wow-delay=".5s">
+                            <span><i class="glyphicon glyphicon-user"></i><a href="/User/CheckoutOrder">@user.Name</a></span>
+                        </div>
+                    }
+                }
+                <div class="col-sm-2 search animated wow fadeInRight" data-wow-delay=".5s">
+                    <a class="play-icon popup-with-zoom-anim" href="#small-dialog"><i class="glyphicon glyphicon-search"> </i> </a>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="head-top">
+                <div class="n-avigation">
+
+                    <nav class="navbar nav_bottom" role="navigation">
+
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header nav_2">
+                            <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#"></a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                            <ul class="nav navbar-nav nav_1">
+                                <li><a href="/">Trang chủ</a></li>
+                                <li><a href="/Product/">Sản phẩm</a></li>
+                                @if (user != null)
+                                {
+                                    <li><a href="/Home/SignOut">Đăng xuất</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="/Home/SignUp">Đăng ký</a></li>
+                                    <li><a href="/Home/SignIn">Đăng nhập</a></li>
+                                }
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+
+                    </nav>
+                </div>
+
+
+                <div class="clearfix"> </div>
+                <!---pop-up-box---->
+                <link href="~/Content/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+                <script src="~/Content/js/jquery.magnific-popup.js" type="text/javascript"></script>
+                <!---//pop-up-box---->
+                <div id="small-dialog" class="mfp-hide">
+                    <div class="search-top">
+                        <div class="login">
+                            <form action="/Product/Index" method="get">
+                                <input type="submit" value="">
+                                <input type="text" name="keyword" value="Nhập vào từ khóa..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $('.popup-with-zoom-anim').magnificPopup({
+                            type: 'inline',
+                            fixedContentPos: false,
+                            fixedBgPos: true,
+                            overflowY: 'auto',
+                            closeBtnInside: true,
+                            preloader: false,
+                            midClick: true,
+                            removalDelay: 300,
+                            mainClass: 'my-mfp-zoom-in'
+                        });
+
+                    });
+                </script>
+                <!---->
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+
+    <div class="row">
+        <div class="chatbox chatbox22 chatbox--tray">
+            <div class="chatbox__title">
+                <h5><a href="javascript:void()">Chat với chúng tôi</a></h5>
+                <!--<button class="chatbox__title__tray">
+                    <span></span>
+                </button>-->
+                <button class="chatbox__title__close">
+                    <span>
+                        <svg viewBox="0 0 12 12" width="12px" height="12px">
+                            <line stroke="#FFFFFF" x1="11.75" y1="0.25" x2="0.25" y2="11.75"></line>
+                            <line stroke="#FFFFFF" x1="11.75" y1="11.75" x2="0.25" y2="0.25"></line>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            @if (Session["User"] == null)
+            {
+                <div class="chatbox__body">
+                    <h5>Vui lòng đăng nhập để chat</h5>
+                </div>
+            }
+            else
+            {
+                <div class="chatbox__body">
+
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" required class="form-control input-sm chat_set_height" placeholder="Soạn tin nhắn..." tabindex="0" dir="ltr" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" contenteditable="true" />
+                        <span class="input-group-btn">
+                            <button class="btn bt_bg btn-sm" id="btn-chat">
+                                Gửi
+                            </button>
+                            <img src="~/Content/images/loading.gif" class="loading-send btn bt_bg btn-sm" style="display:none;" />
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(function () {
+                var chat = $.connection.chatHubs
+                chat.client.displayMessage = function () {
+                    getAllData();
+                }
+                $.connection.hub.start();
+                getAllData();
+            })
+            var lastMessID = 0;
+            function getAllData() {
+                var chatbox = $('.chatbox__body');
+                var userID = $('#UserID').val();
+                $.ajax({
+                    url: location.origin + "/Chat/GetAllMessageChating?UserID=" + userID,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        chatbox.empty()
+                        if (data.length > 0) {
+                            $.each(data, function (i, model) {
+                                var date = new Date(parseInt(model.CreatedDate.substr(6)));
+                                if (model.FromUserID == userID) {
+                                    lastMessID = model.ID;
+                                    chatbox.append(
+                                        '<div class="chatbox__body__message chatbox__body__message--right" id="' + model.ID + '"' + '>' +
+                                        ' <div class="chatbox_timing">' +
+                                        '<ul>' +
+                                        '<li>' + date.getHours() + ':' + date.getMinutes() + '</li>' +
+                                        '</ul>' +
+                                        '</div>' +
+                                        '<img src="/Content/images/' + model.FromAvatarUser + '" alt="Picture">' +
+                                        '<div class="clearfix"></div>' +
+                                        ' <div class="ul_section_full">' +
+                                        ' <ul class="ul_msg">' +
+                                        '<li><strong>' + model.FromUserName + '</strong></li>' +
+                                        '<li>' + model.Content + '</li>' +
+                                        '</ul>' +
+                                        '<div class="clearfix"></div>' +
+                                        '</div>' +
+                                        '</div>'
+                                    );
+                                } else {
+                                    chatbox.append(
+                                        '<div class="chatbox__body__message chatbox__body__message--left" id="' + model.ID + '"' + '>' +
+                                        ' <div class="chatbox_timing">' +
+                                        '<ul>' +
+                                        '<li>' + date.getHours() + ':' + date.getMinutes() + '</li>' +
+                                        '</ul>' +
+                                        '</div>' +
+                                        '<img src="/Content/images/' + model.FromAvatarUser + '" alt="Picture">' +
+                                        '<div class="clearfix"></div>' +
+                                        ' <div class="ul_section_full">' +
+                                        ' <ul class="ul_msg">' +
+                                        '<li><strong>' + model.FromUserName + '</strong></li>' +
+                                        '<li>' + model.Content + '</li>' +
+                                        '</ul>' +
+                                        '<div class="clearfix"></div>' +
+                                        '</div>' +
+                                        '</div>'
+                                    );
+                                }
+                            })
+                        } else {
+                            chatbox.append(
+                                '<p>Chưa có tin nhắn...</p>'
+                            );
+                        }
+                    }
+                })
+                $(".chatbox__body").animate({ scrollTop: 2000000 });
+            }
+            function getLastData() {
+                var chatbox = $('.chatbox__body');
+                var userID = $('#UserID').val();
+                $.ajax({
+                    url: location.origin + "/Chat/GetLastMessageClient?UserID=" + userID,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        var date = new Date(parseInt(data.CreatedDate.substr(6)));
+                        chatbox.append(
+                            '<div class="chatbox__body__message chatbox__body__message--right">' +
+                            ' <div class="chatbox_timing">' +
+                            '<ul>' +
+                            '<li>' + date.getHours() + ':' + date.getMinutes() + '</li>' +
+                            '</ul>' +
+                            '</div>' +
+                            '<img src="/Content/images/' + data.FromAvatarUser + '" alt="Picture">' +
+                            '<div class="clearfix"></div>' +
+                            ' <div class="ul_section_full">' +
+                            ' <ul class="ul_msg">' +
+                            '<li><strong>' + data.FromUserName + '</strong></li>' +
+                            '<li>' + data.Content + '</li>' +
+                            '</ul>' +
+                            '<div class="clearfix"></div>' +
+                            '</div>' +
+                            '</div>')
+                    }
+                })
+            }
+            $('#btn-chat').click(function send() {
+                var fromId = $('#UserID').val();
+                var content = $('#btn-input').val();
+                $.ajax({
+                    url: location.origin + "/Chat/Send",
+                    data: { FromUserID: fromId, ToUserID: 1, Content: content, Side: "Client" },
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (data.status) {
+                            $.notify("Đã gửi!", "success");
+                            $("#btn-chat").show();
+                            $(".loading-send").hide();
+                            getLastData();
+                            $('#btn-input').val("");
+                            $(".chatbox__body").animate({ scrollTop: 2000000 });
+                        } else {
+                            $.notify("Có lỗi xảy ra!", "error");
+                            return;
+                        }
+                    }
+                })
+                $("#btn-chat").hide();
+                $(".loading-send").show();
+            })
+        });
+    </script>
+    <!-- slide -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/imagezoom.js"></script>
+    <!-- start menu -->
+    <script type="text/javascript" src="~/Content/js/memenu.js"></script>
+    <script>$(document).ready(function () { $(".memenu").memenu(); });</script>
+    <!--initiate accordion-->
+    <script type="text/javascript">
+        $(function () {
+            var menu_ul = $('.menu-drop > li > ul'),
+                menu_a = $('.menu-drop > li > a');
+            menu_ul.hide();
+            menu_a.click(function (e) {
+                e.preventDefault();
+                if (!$(this).hasClass('active')) {
+                    menu_a.removeClass('active');
+                    menu_ul.filter(':visible').slideUp('normal');
+                    $(this).addClass('active').next().stop(true, true).slideDown('normal');
+                } else {
+                    $(this).removeClass('active');
+                    $(this).next().stop(true, true).slideUp('normal');
+                }
+            });
+
+        });
+    </script>
+
+    <script src="~/Content/js/notify.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+    <link href="~/Content/css/chatbox.css" rel="stylesheet" />
+    <script src="~/Content/js/chatbox.js"></script>
+    <!-- FlexSlider -->
+    <script defer src="~/Content/js/jquery.flexslider.js"></script>
+    <link rel="stylesheet" href="~/Content/css/flexslider.css" type="text/css" media="screen" />
+
+    <script>
+        // Can also be used with $(document).ready()
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                controlNav: "thumbnails"
+            });
+        });
+    </script>
+    <!---pop-up-box---->
+    <link href="~/Content/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="~/Content/js/jquery.magnific-popup.js" type="text/javascript"></script>
+    <!---//pop-up-box---->
+    <script>
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+        });
+    </script>
+</body>
+</html>

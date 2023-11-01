@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInLeft;">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang chủ</a></li>
+            <li class="active">Đăng ký</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="register">
+        <h2>Đăng ký</h2>
+        @using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
+        {
+            <div class="col-md-6  register-top-grid">
+                <h3>@ViewBag.Message</h3>
+                <div class="mation">
+                    <span>Họ tên</span>
+                    <input type="text" name="Name" required>
+
+                    <span>Email</span>
+                    <input type="text" name="Email" required>
+
+                    <span>Số điện thoại</span>
+                    <input type="text" name="Phone" required>
+                </div>
+                <div class=" col-md-6 register-bottom-grid">
+                    <div class="mation">
+                        <input type="submit" value="Đăng ký" class="btn btn-default">
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class=" col-md-6 register-bottom-grid">
+                <div class="mation">
+                    <span>Mật khẩu</span>
+                    <input type="password" name="Password" required id="Password">
+                    <span>Nhập lại mật khẩu</span>
+                    <input type="password" name="PasswordMatch" required oninput="check(this)">
+                    <span>Địa chỉ</span>
+                    <textarea class="form-control" name="Address" required></textarea>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function check(input) {
+        if (input.value != document.getElementById('Password').value) {
+            input.setCustomValidity('Mật khẩu không trùng khớp');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+</script>

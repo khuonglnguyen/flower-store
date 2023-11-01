@@ -1,0 +1,113 @@
+﻿@model FlowerStore.Models.Product
+@{
+    ViewBag.Title = @Model.Name;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    List<FlowerStore.Models.Category> categoryies = ViewBag.CategoryList as List<FlowerStore.Models.Category>;
+}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Xem/Sửa sản phẩm</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Xem/Sửa sản phẩm</a></li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">@Model.Name</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    @using (Html.BeginForm("Edit", "ProductManage", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                    {
+                        <input type="text" name="ID" value="@Model.ID" hidden />
+                        <div class="card-body">
+                            <span class="badge bg-success">@ViewBag.Message</span>
+                            <div class="form-group">
+                                <label>Tên</label>
+                                <input type="text" class="form-control" value="@Model.Name" required name="Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Danh mục</label>
+                                <select name="CategoryID" class="form-control">
+                                    @foreach (var item in categoryies)
+                                    {
+                                        if (item.ID == Model.CategoryID)
+                                        {
+                                            <option value="@item.ID" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn giá</label>
+                                <input type="text" class="form-control" value="@Model.Price.Value" required name="Price">
+                            </div>
+                            <div class="form-group">
+                                <label>Số lượng</label>
+                                <input type="text" class="form-control" value="@Model.Quantity" required name="Quantity">
+                            </div>
+                            <div class="form-group">
+                                <label>Lượt xem</label>
+                                <input type="text" class="form-control" value="@Model.ViewCount" required name="ViewCount" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Đã bán</label>
+                                <input type="text" class="form-control" value="@Model.PurchasedCount" required name="PurchasedCount" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Hình 1</label>
+                                <img src="~/Content/images/@Model.Image1" alt="Alternate Text" style="width:200px;height:300px;border: solid 1px gray" />
+                                <label>Hình 2</label>
+                                <img src="~/Content/images/@Model.Image2" alt="Alternate Text" style="width:200px;height:300px;border: solid 1px gray" />
+                                <label>Hình 3</label>
+                                <img src="~/Content/images/@Model.Image3" alt="Alternate Text" style="width:200px;height:300px;border: solid 1px gray" />
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 1 mới</label>
+                                <input type="file" class="form-control" name="ImageUpload">
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 2 mới</label>
+                                <input type="file" class="form-control" name="ImageUpload">
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 3 mới</label>
+                                <input type="file" class="form-control" name="ImageUpload">
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <textarea class="form-control" required name="Description">@Model.Description</textarea>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a href="/ProductManage/" class="btn btn-default">Trở lại</a>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

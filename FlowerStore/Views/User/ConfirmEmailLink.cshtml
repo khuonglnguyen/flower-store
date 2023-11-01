@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "ConfirmEmailLink";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInLeft;">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang chủ</a></li>
+            <li class="active">Xác minh tài khoản</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="register">
+        <h2>Xác minh tài khoản</h2>
+        <h4>@ViewBag.Email</h4>
+        <h4>@ViewBag.Message</h4>
+    </div>
+</div>

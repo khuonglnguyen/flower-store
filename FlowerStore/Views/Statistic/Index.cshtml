@@ -1,0 +1,68 @@
+﻿@model List<FlowerStore.Models.Order>
+@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Thống kê đơn đặt hàng</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form action="/Statistic/" method="get">
+                Từ: <input type="date" name="from" value="@ViewBag.from.ToString("yyyy-MM-dd")" required />
+                Đến: <input type="date" name="to" value="@ViewBag.to.ToString("yyyy-MM-dd")" required />
+                <input type="submit" value="Xem" class="btn btn-info" />
+            </form>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ngày đặt</th>
+                            <th>Ngày nhận</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model.Where(x => x.Status == "Complete"))
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.DateOrder.Value.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.DateShip.Value.ToString("dd/MM/yyyy")</td>
+                                    <td><span class="badge bg-success">Hoàn thành</span></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    Chưa có đơn hàng hoàn thành...
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        @if (Model != null && Model.Count > 0)
+        {
+            <a href="/Statistic/DownloadExcelStatisticOrder?from=@Request.Params["from"]&to=@Request.Params["to"]" class="btn btn-success float-right">Xuất Excel</a>
+        }
+    </div>
+</div>

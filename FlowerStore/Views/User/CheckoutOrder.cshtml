@@ -1,0 +1,215 @@
+﻿@model List<FlowerStore.Models.Order>
+@{
+    ViewBag.Title = "Quản lý đơn đặt hàng";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInLeft;">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang chủ</a></li>
+            <li class="active">Đơn đặt hàng</li>
+        </ol>
+    </div>
+</div>
+<!--content-->
+<div class="products">
+    <div class="container">
+        <h2>Đơn đặt hàng của tôi</h2>
+        <div class="col-md-9">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#processing" data-toggle="tab">Chưa duyệt</a></li>
+                <li><a href="#processed" data-toggle="tab">Đã duyệt</a></li>
+                <li><a href="#delivering" data-toggle="tab">Đang giao hàng</a></li>
+                <li><a href="#complete" data-toggle="tab">Hoàn thành</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="processing">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày đặt</th>
+                                <th>Thanh toán</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Where(x => x.Status == "Processing").Count() > 0)
+                            {
+                                foreach (var item in Model.Where(x => x.Status == "Processing"))
+                                {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.DateOrder.Value.ToString("dd/MM/yyyy")</td>
+                                        @if (item.IsPaid.Value)
+                                        {
+                                            <td><span class="label label-success">Đã thanh toán</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="label label-warning">Chưa thanh toán</span></td>
+                                        }
+                                        <td><span class="label label-warning">Chưa duyệt</span></td>
+                                        <td>
+                                            <a href="/User/OrderDetails/?ID=@item.ID" class="btn btn-outline-secondary">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        Không có đơn hàng chưa duyệt...
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="processed">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày đặt</th>
+                                <th>Ngày nhận(dự kiến)</th>
+                                <th>Thanh toán</th>
+                                <th>Trạng thái</th>
+                                <th>Tình trạng giao hàng</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Where(x => x.Status == "Processed").Count() > 0)
+                            {
+                                foreach (var item in Model.Where(x => x.Status == "Processed"))
+                                {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.DateOrder.Value.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.DateShip.Value.ToString("dd/MM/yyyy")</td>
+                                        @if (item.IsPaid.Value)
+                                        {
+                                            <td><span class="label label-success">Đã thanh toán</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="label label-warning">Chưa thanh toán</span></td>
+                                        }
+                                        <td><span class="label label-success">Đã duyệt</span></td>
+                                        <td><span class="label label-warning">Chưa giao</span></td>
+                                        <td>
+                                            <a href="/User/OrderDetails/?ID=@item.ID" class="btn btn-outline-secondary">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        Không có đơn hàng chưa duyệt...
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="delivering">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày đặt</th>
+                                <th>Ngày nhận(dự kiến)</th>
+                                <th>Thanh toán</th>
+                                <th>Tình trạng giao hàng</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Where(x => x.Status == "Delivering").Count() > 0)
+                            {
+                                foreach (var item in Model.Where(x => x.Status == "Delivering"))
+                                {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.DateOrder.Value.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.DateShip.Value.ToString("dd/MM/yyyy")</td>
+                                        @if (item.IsPaid.Value)
+                                        {
+                                            <td><span class="label label-success">Đã thanh toán</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="label label-warning">Chưa thanh toán</span></td>
+                                        }
+                                        <td><a href="/User/Complete/@item.ID">Đang giao(click vào nếu đã nhận được hàng)</a></td>
+                                        <td>
+                                            <a href="/User/OrderDetails/?ID=@item.ID" class="btn btn-outline-secondary">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        Chưa có đơn hàng đang giao...
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane" id="complete">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày đặt</th>
+                                <th>Ngày nhận</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Where(x => x.Status == "Complete").Count() > 0)
+                            {
+                                foreach (var item in Model.Where(x => x.Status == "Complete"))
+                                {
+                                    <tr>
+                                        <td>@item.ID</td>
+                                        <td>@item.DateOrder.Value.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.DateShip.Value.ToString("dd/MM/yyyy")</td>
+                                        <td><span class="label label-success">Hoàn thành</span></td>
+                                        <td>
+                                            <a href="/User/OrderDetails/?ID=@item.ID" class="btn btn-outline-secondary">Chi tiết</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        Chưa có đơn hàng hoàn thành...
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#myTab a:first').tab('show')
+    })
+</script>

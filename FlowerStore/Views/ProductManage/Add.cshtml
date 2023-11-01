@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Thêm mới";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    List<FlowerStore.Models.Category> categoryies = ViewBag.CategoryList as List<FlowerStore.Models.Category>;
+}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Thêm mới</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Thêm mới</a></li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    @using (Html.BeginForm("Add", "ProductManage", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                    {
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Tên</label>
+                                <input type="text" class="form-control" required name="Name">
+                            </div>
+                            <div class="form-group">
+                                <label>Danh mục</label>
+                                <select name="CategoryID" class="form-control">
+                                    @foreach (var item in categoryies)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn giá</label>
+                                <input type="text" class="form-control" required name="Price">
+                            </div>
+                            <div class="form-group">
+                                <label>Số lượng</label>
+                                <input type="text" class="form-control" required name="Quantity">
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 1 (*)</label>
+                                <input type="file" class="form-control" name="ImageUpload" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 2</label>
+                                <input type="file" class="form-control" name="ImageUpload">
+                            </div>
+                            <div class="form-group">
+                                <label>Chọn hình 3</label>
+                                <input type="file" class="form-control" name="ImageUpload">
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <textarea class="form-control" required name="Description"></textarea>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a href="/ProductManage/" class="btn btn-default">Trở lại</a>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

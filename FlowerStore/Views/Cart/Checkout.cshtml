@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    List<FlowerStore.Models.ItemCart> itemCarts = Session["Cart"] as List<FlowerStore.Models.ItemCart>;
+}
+<script>
+    $(document).ready(function () {
+        $('.qty').on('keydown', function (e) {
+            e.preventDefault();
+        });
+        $('.qty').change(function () {
+            var ID = $(this).data("id");
+            var Quantity = $(this).val();
+            $.ajax({
+                url: '/Cart/UpdateQuantity',
+                data: {
+                    ProductID: ID,
+                    Quantity: Quantity
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.update == true) {
+                        $.notify("Cập nhật thành công!", "success");
+
+                        $.ajax({
+                            url: '/Cart/GetSubTotal',
+                            data: {
+                                ProductID: ID
+                            },
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                $("#" + ID).html(response.SubTotal + "₫")
+                            },
+                        });
+
+                        $.ajax({
+                            url: '/Cart/GetTotal',
+                            data: {
+                                ProductID: ID
+                            },
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                $(".total-cart").html("Tổng: " + response.Total + "₫")
+                            },
+                        });
+
+                        $.ajax({
+                            url: '/Cart/GetTotalCart',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                $(".simpleCart_total").html(response.TotalPrice + "₫ (" + response.TotalQuantity + ")")
+                            },
+                        });
+                    } else if (response.remove == true) {
+                        $.notify("Đã xóa sản phẩm trong giỏ hàng!", "success");
+                        setTimeout(function () { location.reload(); }, 1000);
+                    }
+                    else if (response.status == false) {
+                        $.notify("Số lượng không đủ!", "error");
+                        setTimeout(function () {
+                                window.location.reload();
+                        }, 1500);
+                    } else {
+                        $.notify("Lỗi!", "error");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                },
+            });
+        })
+    });
+</script>
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInLeft;">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang chủ</a></li>
+            <li class="active">Giỏ hàng</li>
+        </ol>
+    </div>
+</div>
+<!---->
+<div class="container">
+    <div class="check-out">
+        <h2>Giỏ hàng</h2>
+        @if (itemCarts != null && itemCarts.Count > 0)
+        {
+            <table>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+                @foreach (var item in itemCarts)
+                {
+                    <tr>
+                        <td class="ring-in">
+                            <a href="/Product/Details/@item.ProductID" class="at-in"><img src="~/Content/images/@item.ProductImage" class="img-responsive" alt=""></a>
+                            <div class="sed">
+                                <h5>@item.ProductName</h5>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </td>
+                        <td class="check"><input type="number" class="qty" data-id="@item.ProductID" value="@item.Quantity" style="width:100px" min="0"></td>
+                        <td>@item.ProductPrice.ToString("#,##")₫</td>
+                        <td id="@item.ProductID">@((item.ProductPrice * item.Quantity).ToString("#,##"))₫</td>
+                    </tr>
+                }
+                <tr>
+                    <th class="total-cart">Tổng: @itemCarts.Sum(x => x.Quantity * x.ProductPrice).ToString("#,##")₫</th>
+                </tr>
+            </table>
+            if (Session["User"] == null)
+            {
+                <a href="/Home/SignIn" class=" to-buy">ĐĂNG NHẬP ĐỂ ĐẶT HÀNG</a>
+            }
+            else
+            {
+                <p>Phương thức thanh toán:</p>
+                <form action="/Cart/AddOrder" method="post">
+                    <select name="payment" >
+                        <option value="cod">Tiền mặt (COD)</option>
+                        <option value="paypal">Thanh toán với Paypal</option>
+                        <option value="momo">Thanh toán với Momo</option>
+                    </select> <br />
+                    <button class="to-buy btn btn-warning">TIẾN HÀNH ĐẶT HÀNG</button>
+                </form>
+            }
+        }
+        else
+        {
+            <h3> Giỏ hàng hiện đang rỗng</h3>
+            <div class="clearfix">
+            </div>
+        }
+    </div>
+</div>

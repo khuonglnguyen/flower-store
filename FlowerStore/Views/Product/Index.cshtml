@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = ViewBag.NamePage;
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    List<FlowerStore.Models.Category> categories = ViewBag.ListCategory as List<FlowerStore.Models.Category>;
+    List<FlowerStore.Models.Product> products = ViewBag.ListProduct as List<FlowerStore.Models.Product>;
+}
+<script>
+    $(document).ready(function () {
+        $(".item_add").on('click', function () {
+            event.preventDefault();
+            var ID = $(this).data("id");
+            $.ajax({
+                url: '/Cart/AddItem',
+                data: {
+                    ProductID: ID
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        $.notify("Thêm vào giỏ hàng thành công!", "success");
+
+                        $.ajax({
+                            url: '/Cart/GetTotalCart',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (response) {
+                                $(".simpleCart_total").html(response.TotalPrice + "₫ (" + response.TotalQuantity + ")")
+                            },
+                        });
+                    } else {
+                        $.notify("Số lượng không đủ!", "error");
+                    }
+                },
+            });
+        })
+    });
+</script>
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInLeft;">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang chủ</a></li>
+            <li class="active">@ViewBag.NamePage</li>
+        </ol>
+    </div>
+</div>
+<!--content-->
+<div class="products">
+    <div class="container">
+        <h2>@ViewBag.NamePage</h2>
+        <div class="col-md-9">
+            @if (products.Count > 0)
+            {
+                int count = 1;
+            loop:
+                <div class="content-top1">
+                    @for (int i = count - 1; i < products.Count; i++)
+                    {
+                        <div class="col-md-4 col-md4">
+                            <div class="col-md1 simpleCart_shelfItem">
+                                <a href="/Product/Details/@products[i].ID">
+                                    <img class="img-responsive" src="~/Content/images/@products[i].Image1" alt="" style="height:250px;width:200px" />
+                                </a>
+                                <h3><a href="/Product/Details/@products[i].ID">@products[i].Name</a></h3>
+                                <div class="price">
+                                    <h5 class="item_price">@products[i].Price.Value.ToString("#,##")₫</h5>
+                                    <p class="item_price">Đã bán: @products[i].PurchasedCount (Còn lại @products[i].Quantity)</p>
+                                    <a href="#" class="item_add" data-id="@products[i].ID">Chọn mua</a>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </div>
+                        </div>
+                        if (count % 3 == 0)
+                        {
+                            @Html.Raw("</div>");
+                            count += 1;
+                            goto loop;
+                        }
+                        count += 1;
+                    }
+                    <div class="clearfix"> </div>
+                </div>
+            }
+            else
+            {
+                <h3>Không có sản phẩm nào...</h3>
+            }
+        </div>
+        <div class="col-md-3 product-bottom">
+            <!--categories-->
+            <div class=" rsidebar span_1_of_left">
+                <h3 class="cate">Danh mục</h3>
+                <ul class="menu-drop">
+                    @foreach (var item in categories)
+                    {
+                        <li class="item1">
+                            <a href="/Product/Index?CategoryID=@item.ID">@item.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!--//content-->

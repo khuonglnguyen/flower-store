@@ -1,0 +1,105 @@
+﻿@model List<FlowerStore.Models.Product>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Quản lý sản phẩm</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                @if (string.IsNullOrEmpty(Request.Params["keyword"]))
+                {
+                    <h3 class="card-title">Danh sách sản phẩm</h3>
+                }
+                else
+                {
+                    <h3 class="card-title">Danh sách sản phẩm với từ khóa "@Request.Params["keyword"]"</h3>
+                }
+                <div class="card-tools">
+                    <form action="/ProductManage/" method="get">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="keyword" class="form-control float-right" placeholder="Tìm kiếm..." required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <a href="/ProductManage/Add" class="btn btn-outline-success col-2">Thêm mới</a>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên</th>
+                            <th>Hình ảnh</th>
+                            <th>Người tạo</th>
+                            <th>Đơn giá</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.Name</td>
+                                    <td><img src="~/Content/images/@item.Image1" alt="Alternate Text" style="width:50px;height:80px" /></td>
+                                    <td>@item.User.Name</td>
+                                    <td>@item.Price.Value.ToString("#,##")₫</td>
+                                    @if (item.IsActive.Value)
+                                    {
+                                        <td><span class="badge bg-success">Kích hoạt</span></td>
+                                    }
+                                    else
+                                    {
+                                        <td><span class="badge bg-danger">Khóa</span></td>
+                                    }
+                                    <td>
+                                        @if (item.IsActive.Value)
+                                        {
+                                            <button class="btn btn-outline-danger" onclick="location.href='/ProductManage/ToggleActive/@item.ID'">Khóa</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-success" onclick="location.href='/ProductManage/ToggleActive/@item.ID'">Mở</button>
+                                        }
+                                        <button class="btn btn-primary" onclick="location.href='/ProductManage/Details/@item.ID'">Chi tiết/Sửa</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    Không tìm thấy sản phẩm...
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
